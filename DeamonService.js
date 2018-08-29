@@ -28,6 +28,7 @@ class Service {
 
   async tryOrderBeverage () {
     const currenList = Queue.elements.filter(QueueElement => QueueElement.waitlist === true)
+    console.log(currenList)
     if (currenList.length !== 0) {
       await this.getStatus().then(async () => {
         await this.StartBeverage(currenList[0].productID).then(() => {
@@ -45,7 +46,7 @@ class Service {
 
   getStatus () {
     return new Promise((resolve, reject) => {
-      request(AclInterface + endpoints.state, (err, res, body) => {
+      request(fakeapi + endpoints.state, (err, res, body) => {
         if (err) {
           reject(new Error('some wrong'))
         } else {
