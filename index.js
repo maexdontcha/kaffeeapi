@@ -1,23 +1,26 @@
-// var server = require('http').Server(app)
-// const fs = require('fs')
-// const http = require('http')
-// const { parse } = require('querystring')
-//
-import CoffeeObjekt from './OrderObject'
-import { Queue } from './CoffeeQueue'
-import { DeamonService } from './DeamonService'
 
+import CoffeeObjekt from './module/OrderObject'
+import { Queue } from './module/CoffeeQueue'
+import { DeamonService } from './module/DeamonService'
+import { ApiRequest, Api, Endpoint } from './service/ApiRequest'
+import { MaschineStates } from './service/StaticData'
+
+// Init Deamon to check the Queue and Execut orders
 DeamonService.run()
+
+// const request = require('request')
 
 const express = require('express')
 const app = express()
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.get('Origin') || '*')
-  res.header('Access-Control-Allow-Credentials', 'true')
-  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE')
-  res.header('Access-Control-Expose-Headers', 'Content-Length')
   res.header(
+    'Access-Control-Expose-Headers',
+    'Content-Length',
+    'Access-Control-Allow-Methods',
+    'GET,HEAD,PUT,PATCH,POST,DELETE',
+    'Access-Control-Allow-Credentials', 'true',
+    'Access-Control-Allow-Origin', req.get('Origin') || '*',
     'Access-Control-Allow-Headers',
     'Accept, Authorization, Content-Type, X-Requested-With, Range'
   )
@@ -32,16 +35,21 @@ app.get('/', (req, res, next) => {
   res.json({'status': true, 'message': 'API Running'})
 })
 
-let state = 'ready'
+
 app.get('/orderBeverage', async (req, res) => {
   const productID = req.query.productID
-  const deliveryDate = req.query.deliveryDate
+  let deliveryDate = req.query.deliveryDate
   const userID = req.query.userID
-
-  const Order = new CoffeeObjekt({'productID': productID, 'deliveryDate': deliveryDate, 'userID': userID})
-
+  if(!deliveryDate){
+    let deliveryDate = new Date()
+  }
+  const Order = new CoffeeObjekt({
+    'productID': productID,
+    'deliveryDate': deliveryDate,
+    'userID': userID,
+    'httpreq': req
+  })
   res.json({ 'uuid': Order.uuid })
-  // Return the articles to the rendering engine
 })
 
 app.get('/getStatus', async (req, res) => {
@@ -59,10 +67,9 @@ app.delete('/deleteBeverage', async (req, res) => {
   })
 })
 
+// Liefert die dauer in sekunden wenn die bestellung in der waitlist ist, sonst null
 app.get('/updateBeverage', async (req, res) => {
   const uuid = req.query.uuid
-  console.log(uuid)
-  console.log(req.query.deliveryDate)
 
   Queue.OrderByUUid(uuid, (err, element) => {
     if (err) {
@@ -77,44 +84,33 @@ app.get('/updateBeverage', async (req, res) => {
   })
 })
 
+// Liefert die dauer in sekunden wenn die bestellung in der waitlist ist, sonst null
 app.get('/getEstimatedTime', async (req, res) => {
-  // const uuid = req.query.uuid
-  // const Element = DeamonService.list.find(QueueElement => QueueElement.uuid === uuid)
-  // if (Element) {
-  //   const index = DeamonService.list.findIndex(QueueElement => QueueElement.uuid === uuid)
-  //   res.status(200).json({ 'estimatedTime': 180 * index })
-  // } else {
-  //   const Element = Queue.elements.find(QueueElement => QueueElement.uuid === uuid)
-  //   if (Element) {
-  //     res.status(200).json({ 'state': true, 'message': 'bestellung in der zukunft' })
-  //   } else {
-  //     res.status(200).json({ 'state': false, 'message': 'uuid nicht gefunden' })
-  //   }
-  // }
+  res.status(200).json({ estimatedTime: Queue.getEstimatedTime(req.query.uuid) })
 })
 
+// erstellt eine Liste mit allen einträgen die Aktuellen noch in der Queue liegen
+app.get('/myQueue', async (req, res) => {
+  res.status(200).json({ myQueue: Queue.elements.filter(QueueElement => QueueElement.userID === req.query.userid) })
+})
 
+// Endpunkte um den Status der Kaffeemaschiene zu faken
+let state = 'ready'
 app.get('/fakestatus', async (req, res) => {
-  // "ready"
-  // "isRunning"
   res.status(200).json({ state: state})
 })
 
 app.get('/changestate', async (req, res) => {
-  const x = () => {
-    state = 'isRunning'
-    request('http://localhost:8000/sendCommand?cmd=setLight(200,100,200)', (err, res, body) => {})
-    request('http://localhost:8000/sendCommand?cmd=cmd=Speak%20exp:=James', (err, res, body) => {})
-    setTimeout(() => {
-      state = 'ready'
-      request('http://localhost:8000/sendCommand?cmd=setLight(1,233,1)', (err, res, body) => {})
-      request('http://localhost:8000/sendCommand?cmd=cmd=Speak%20exp:=Fertig', (err, res, body) => {})
-    }, 45000)
-  }
-  x()
+  state = MaschineStates.run
+  setTimeout(async () => {
+    state = MaschineStates.ready
+    await ApiRequest(Api.Acl + Endpoint.cmd + 'setLight(200,100,0)')
+    await ApiRequest(Api.Acl + Endpoint.cmd + 'Speak exp:="Wir Danken Philipp und Max für die tolle Api"')
+  }, req.query.duration*1000)
   res.status(200).json({ state: true})
 })
 
+// App Run on port 9000
 var listener = app.listen(9000, err => {
   if (err) throw err
   console.log('Listening on http://localhost:' + listener.address().port)
