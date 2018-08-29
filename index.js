@@ -40,12 +40,6 @@ app.get('/orderBeverage', async (req, res) => {
 
   const Order = new CoffeeObjekt({'productID': productID, 'deliveryDate': deliveryDate, 'userID': userID})
 
-  const x = () => {
-    state = 'isRunning'
-    setTimeout(() => state = 'ready', 30000)
-  }
-  x()
-
   res.json({ 'uuid': Order.uuid })
   // Return the articles to the rendering engine
 })
@@ -104,6 +98,15 @@ app.get('/fakestatus', async (req, res) => {
   // "ready"
   // "isRunning"
   res.status(200).json({ state: state})
+})
+
+app.get('/changestate', async (req, res) => {
+  const x = () => {
+    state = 'isRunning'
+    setTimeout(() => state = 'ready', 30000)
+  }
+  x()
+  res.status(200).json({ state: true})
 })
 
 var listener = app.listen(9000, err => {

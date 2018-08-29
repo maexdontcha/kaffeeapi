@@ -7,7 +7,8 @@ const fakeapi = 'http://localhost:9000'
 const endpoints = {
   order: '/sendCommand?cmd=StartBeverage',
   // state: '/getStatus'
-  state: '/fakestatus'
+  state: '/fakestatus',
+  changestate: '/changestate'
 }
 
 class Service {
@@ -63,6 +64,7 @@ class Service {
 
   StartBeverage (BeverageId) {
     return new Promise((resolve, reject) => {
+      request(fakeapi + endpoints.changestate, (err, res, body) => {})
       request(AclInterface + endpoints.order + '(' + BeverageId + ')', (err, res, body) => {
         if (err) {
           reject(new Error('some wrong'))
