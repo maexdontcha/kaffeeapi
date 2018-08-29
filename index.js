@@ -103,7 +103,13 @@ app.get('/fakestatus', async (req, res) => {
 app.get('/changestate', async (req, res) => {
   const x = () => {
     state = 'isRunning'
-    setTimeout(() => state = 'ready', 30000)
+    request('http://localhost:8000/sendCommand?cmd=setLight(200,100,200)', (err, res, body) => {})
+    request('http://localhost:8000/sendCommand?cmd=cmd=Speak%20exp:=James', (err, res, body) => {})
+    setTimeout(() => {
+      state = 'ready'
+      request('http://localhost:8000/sendCommand?cmd=setLight(1,233,1)', (err, res, body) => {})
+      request('http://localhost:8000/sendCommand?cmd=cmd=Speak%20exp:=Fertig', (err, res, body) => {})
+    }, 45000)
   }
   x()
   res.status(200).json({ state: true})
