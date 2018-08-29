@@ -10,11 +10,7 @@ class Service {
   }
 
   // init function
-  run () {
-    console.log('Deamon is running')
-    console.log('Check Queue in interval 1000ms')
-    console.log('tryOrderBeverage in interval 3000ms')
-  }
+  run () {}
 
   // Prüft ob Bestellungen in der Queue ausgeführt werden sollen
   // und setzt das Attribut Waitlist auf True

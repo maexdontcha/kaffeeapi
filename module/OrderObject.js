@@ -1,4 +1,3 @@
-
 import { Queue } from './CoffeeQueue'
 import { LoggingModul } from './Logging'
 import { CoffeeDuration } from '../service/StaticData'
@@ -46,7 +45,7 @@ class CoffeeOrder {
   update (item) {
     this.UpdatetAt = new Date()
 
-    // Updatet das OrderObject
+    // Updatet das OrderObject sodass es wieder in der Queue landet
     this.inQueue = true
     this.waitlist = false
     if (item.productID) {
@@ -59,6 +58,8 @@ class CoffeeOrder {
       this.userID = item.userID
     }
   }
+
+  // UUID generator
   GenerateUUID () {
     const Uid =
       Math.random().toString(36).substring(2, 7) + '-' +

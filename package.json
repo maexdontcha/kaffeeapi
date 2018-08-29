@@ -11,9 +11,7 @@
   "author": "Max Hänsel",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3",
-    "express-pdf": "^1.2.2",
-    "nodeice": "^3.0.8"
+    "express": "^4.16.3"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

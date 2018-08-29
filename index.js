@@ -3,10 +3,13 @@ import CoffeeObjekt from './module/OrderObject'
 import { Queue } from './module/CoffeeQueue'
 import { DeamonService } from './module/DeamonService'
 import { ApiRequest, Api, Endpoint } from './service/ApiRequest'
-import { MaschineStates } from './service/StaticData'
+import { MaschineStates, entryScreen } from './service/StaticData'
 
 // Init Deamon to check the Queue and Execut orders
 DeamonService.run()
+
+// Render entryScreen
+entryScreen()
 
 // const request = require('request')
 
@@ -32,15 +35,14 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req, res, next) => {
-  res.json({'status': true, 'message': 'API Running'})
+  res.json({ 'status': true, 'message': 'API Running' })
 })
-
 
 app.get('/orderBeverage', async (req, res) => {
   const productID = req.query.productID
   let deliveryDate = req.query.deliveryDate
   const userID = req.query.userID
-  if(!deliveryDate){
+  if (!deliveryDate) {
     let deliveryDate = new Date()
   }
   const Order = new CoffeeObjekt({
@@ -78,7 +80,7 @@ app.get('/updateBeverage', async (req, res) => {
       const productID = req.query.productID
       const deliveryDate = req.query.deliveryDate
       const userID = req.query.userID
-      element.update({'productID': productID, 'deliveryDate': deliveryDate, 'userID': userID})
+      element.update({ 'productID': productID, 'deliveryDate': deliveryDate, 'userID': userID })
       res.status(200).json({ status: 'True' })
     }
   })
@@ -97,7 +99,7 @@ app.get('/myQueue', async (req, res) => {
 // Endpunkte um den Status der Kaffeemaschiene zu faken
 let state = 'ready'
 app.get('/fakestatus', async (req, res) => {
-  res.status(200).json({ state: state})
+  res.status(200).json({ state: state })
 })
 
 app.get('/changestate', async (req, res) => {
@@ -106,12 +108,12 @@ app.get('/changestate', async (req, res) => {
     state = MaschineStates.ready
     await ApiRequest(Api.Acl + Endpoint.cmd + 'setLight(200,100,0)')
     await ApiRequest(Api.Acl + Endpoint.cmd + 'Speak exp:="Wir Danken Philipp und Max für die tolle Api"')
-  }, req.query.duration*1000)
-  res.status(200).json({ state: true})
+  }, req.query.duration * 1000)
+  res.status(200).json({ state: true })
 })
 
 // App Run on port 9000
-var listener = app.listen(9000, err => {
+app.listen(9000, err => {
   if (err) throw err
-  console.log('Listening on http://localhost:' + listener.address().port)
+  // console.log('Listening on http://localhost:' + listener.address().port)
 })
