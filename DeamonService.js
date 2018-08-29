@@ -2,10 +2,12 @@ import { Queue } from './CoffeeQueue'
 const request = require('request')
 
 const AclInterface = 'http://localhost:8000'
+const fakeapi = 'http://localhost:9000'
 
 const endpoints = {
   order: '/sendCommand?cmd=StartBeverage',
-  state: '/getStatus'
+  // state: '/getStatus'
+  state: '/fakestatus'
 }
 
 class Service {

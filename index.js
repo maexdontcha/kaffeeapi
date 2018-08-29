@@ -32,12 +32,19 @@ app.get('/', (req, res, next) => {
   res.json({'status': true, 'message': 'API Running'})
 })
 
+let state = 'ready'
 app.get('/orderBeverage', async (req, res) => {
   const productID = req.query.productID
   const deliveryDate = req.query.deliveryDate
   const userID = req.query.userID
 
   const Order = new CoffeeObjekt({'productID': productID, 'deliveryDate': deliveryDate, 'userID': userID})
+
+  const x = () => {
+    state = 'isRunning'
+    setTimeout(() => state = 'ready', 30000)
+  }
+  x()
 
   res.json({ 'uuid': Order.uuid })
   // Return the articles to the rendering engine
@@ -90,6 +97,13 @@ app.get('/getEstimatedTime', async (req, res) => {
   //     res.status(200).json({ 'state': false, 'message': 'uuid nicht gefunden' })
   //   }
   // }
+})
+
+
+app.get('/fakestatus', async (req, res) => {
+  // "ready"
+  // "isRunning"
+  res.status(200).json({ state: state})
 })
 
 var listener = app.listen(9000, err => {
