@@ -1,4 +1,3 @@
-
 import CoffeeObjekt from './module/OrderObject'
 import { Queue } from './module/CoffeeQueue'
 import { DeamonService } from './module/DeamonService'
