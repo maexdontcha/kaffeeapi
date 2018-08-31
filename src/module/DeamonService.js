@@ -1,6 +1,6 @@
 import { Queue } from './CoffeeQueue'
 import { ApiRequest, Api, Endpoint } from '../service/ApiRequest'
-import { CoffeeDuration } from '../service/StaticData'
+import { CoffeeDuration, entryScreen } from '../service/StaticData'
 
 // Service Class, prüft und sendet die Orders an das ACL Interface wenn vorhanden
 class Service {
@@ -10,7 +10,10 @@ class Service {
   }
 
   // init function
-  run () {}
+  run () {
+    // Render entryScreen
+    // entryScreen()
+  }
 
   // Prüft ob Bestellungen in der Queue ausgeführt werden sollen
   // und setzt das Attribut Waitlist auf True

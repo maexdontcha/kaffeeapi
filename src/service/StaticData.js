@@ -1,9 +1,9 @@
 // Zeiten wie lange die jeweiligen Kaffen brauchen
 export const CoffeeDuration = {
-  1: 10, // Espresso
-  2: 15, // CaffeeCrema
-  3: 50, // CaffeeCrema
-  4: 50 // CaffeeCrema
+  1: 45, // Espresso
+  2: 55, // CaffeeCrema
+  3: 44, // CaffeeCrema
+  4: 30 // CaffeeCrema
 }
 
 // Maschienen Stati
