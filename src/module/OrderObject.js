@@ -1,7 +1,7 @@
 import { Queue } from './CoffeeQueue'
 import { LoggingModul } from './Logging'
 import { CoffeeDuration } from '../service/StaticData'
-
+import { InsertIntoMongoDB, UpdateMongoObject } from '../service/MongoDB'
 // Set Counter to 0
 let counter = 0
 
@@ -26,6 +26,17 @@ class CoffeeOrder {
 
     Queue.add(this)
     LoggingModul.add(this)
+    this.GenerateMongoDB()
+  }
+
+  GenerateMongoDB () {
+    InsertIntoMongoDB(this)
+  }
+
+  Save () {
+    const id = { uuid: this.uuid }
+    const myobj = { $set: this }
+    UpdateMongoObject(id, myobj)
   }
 
   // setzt Order auf Waitlist
@@ -33,18 +44,20 @@ class CoffeeOrder {
     this.inQueue = false
     this.waitlist = true
     this.waitlistTime = new Date()
+    this.Save()
   }
 
   // setzt Order auf Delivered
-  Delivered () {
+  DeliveredToCustomer () {
     this.delivered = true
+    this.waitlist = false
     this.deliveredTime = new Date()
+    this.Save()
   }
 
   // Updatet das OrderObject
   update (item) {
     this.UpdatetAt = new Date()
-
     // Updatet das OrderObject sodass es wieder in der Queue landet
     this.inQueue = true
     this.waitlist = false
@@ -57,6 +70,7 @@ class CoffeeOrder {
     if (item.userID) {
       this.userID = item.userID
     }
+    this.Save()
   }
 
   // UUID generator

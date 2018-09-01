@@ -20,8 +20,8 @@ class Service {
   // Der Prüfinterval beträgt 1sek
   checkQueue () {
     setInterval(() => {
-      Queue.ToBeExecuted((QueueElement) => {
-        QueueElement.AddToWaitlist()
+      Queue.ToBeExecuted((CoffeeOrder) => {
+        CoffeeOrder.AddToWaitlist()
       })
     }, 1000)
   }
@@ -31,13 +31,14 @@ class Service {
   async tryOrderBeverage () {
     // Holt sich die Liste die Abgearbeitet werden muss
     const currenList = Queue.GenerateWaitlist()
+    const CoffeeOrder = currenList[0]
     if (currenList.length !== 0) {
       // Prüft ob die Maschine Daten annehmen kann
       await this.getStatus().then(async () => {
-        await this.StartBeverage(currenList[0].productID).then(() => {
-          currenList[0].Delivered()
+        await this.StartBeverage(CoffeeOrder.productID).then(() => {
+          CoffeeOrder.DeliveredToCustomer()
           // Löscht die Order aus der Queue
-          const index = Queue.elements.findIndex(QueueElement => QueueElement.uuid === currenList[0].uuid)
+          const index = Queue.elements.findIndex(QueueElement => QueueElement.uuid === CoffeeOrder.uuid)
           Queue.elements.splice(index, 1)
         }).catch(() => {
           // Ausgabe auf der Console
@@ -88,4 +89,5 @@ class Service {
     })
   }
 }
+
 export const DeamonService = new Service()
