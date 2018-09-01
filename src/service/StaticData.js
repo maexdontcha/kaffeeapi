@@ -13,6 +13,13 @@ export const MaschineStates = {
   error: 'error'
 }
 
+// MongoDB
+export const MongoStatic = {
+  MongoURL: 'mongodb://localhost:27017',
+  DBName: 'myproject',
+  Collection: 'test5'
+}
+
 export const entryScreen = () => {
   console.log(' ______________________________________________________________')
   console.log('|                                                             |')

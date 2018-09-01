@@ -29,8 +29,8 @@ class CoffeeOrder {
     this.GenerateMongoDB()
   }
 
-  GenerateMongoDB () {
-    InsertIntoMongoDB(this)
+  async GenerateMongoDB () {
+    await InsertIntoMongoDB(this)
   }
 
   Save () {

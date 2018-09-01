@@ -1,5 +1,5 @@
 import { Queue } from './CoffeeQueue'
-import { } from '../service/MongoDB'
+import { FindMongoObject } from '../service/MongoDB'
 
 class Logging {
   constructor (item) {
@@ -15,7 +15,7 @@ class Logging {
     return { inQueue: QueueLength, inWaitlist: Waitlist }
   }
 
-  WorkloadWaitlistecon () {
+  WorkloadWaitliste () {
     const Waitlist = Queue.GenerateWaitlist()
     if (Waitlist.length > 0) {
       return Waitlist.map(item => item.duration).reduce((a, b) => a + b)
@@ -24,8 +24,13 @@ class Logging {
     }
   }
 
-  EstimatedDeliveryTime () {
-    const x = this.elements.map(item => {
+  async EstimatedDeliveryTime () {
+    let list = null
+    await LoggingModul.LoadAllObjects().then((listin) => {
+      list = listin
+    })
+
+    const x = list.map(item => {
       if (item.waitlistTime !== null && item.deliveredTime !== null) {
         return (item.deliveredTime - item.waitlistTime) / 1000 + item.duration
       }
@@ -41,6 +46,14 @@ class Logging {
       const y = x.reduce((a, b) => a + b)
       return y / x.length
     }
+  }
+
+  async LoadAllObjects () {
+    return new Promise(async (resolve, reject) => {
+      await FindMongoObject().then((array) => {
+        resolve(array)
+      })
+    })
   }
 }
 

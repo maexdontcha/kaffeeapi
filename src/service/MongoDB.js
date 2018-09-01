@@ -1,16 +1,11 @@
+import { MongoStatic } from './StaticData'
 const MongoClient = require('mongodb').MongoClient
 
-const MongoURL = 'mongodb://localhost:27017'
-// Database Name
-const dbName = 'myproject'
-// Collectionname
-const coffeeorder = 'test4'
-
 export const InsertIntoMongoDB = (myobj) => {
-  MongoClient.connect(MongoURL, { useNewUrlParser: true }, (err, client) => {
+  MongoClient.connect(MongoStatic.MongoURL, { useNewUrlParser: true }, (err, client) => {
     if (err) throw err
-    const db = client.db(dbName)
-    const collection = db.collection(coffeeorder)
+    const db = client.db(MongoStatic.DBName)
+    const collection = db.collection(MongoStatic.Collection)
     collection.insertOne(myobj, (err, res) => {
       if (err) throw err
     })
@@ -18,10 +13,10 @@ export const InsertIntoMongoDB = (myobj) => {
 }
 
 export const UpdateMongoObject = (id, myobj) => {
-  MongoClient.connect(MongoURL, { useNewUrlParser: true }, (err, client) => {
+  MongoClient.connect(MongoStatic.MongoURL, { useNewUrlParser: true }, (err, client) => {
     if (err) throw err
-    const db = client.db(dbName)
-    const collection = db.collection(coffeeorder)
+    const db = client.db(MongoStatic.DBName)
+    const collection = db.collection(MongoStatic.Collection)
 
     collection.updateOne(id, myobj, (err, res) => {
       if (err) throw err
@@ -31,17 +26,16 @@ export const UpdateMongoObject = (id, myobj) => {
 }
 
 export const FindMongoObject = () => {
-  MongoClient.connect(MongoURL, { useNewUrlParser: true }, (err, client) => {
-    if (err) throw err
-    const db = client.db(dbName)
-    const collection = db.collection(coffeeorder)
+  return new Promise((resolve, reject) => {
+    MongoClient.connect(MongoStatic.MongoURL, { useNewUrlParser: true }, (err, client) => {
+      if (err) throw err
+      const db = client.db(MongoStatic.DBName)
+      const collection = db.collection(MongoStatic.Collection)
 
-    collection.find()
+      collection.find().toArray((err, result) => {
+        if (err) throw err
+        resolve(result)
+      })
+    })
   })
 }
-
-// db.collection('mammals').find().toArray(function (err, result) {
-//   if (err) throw err
-//
-//   console.log(result)
-// })
