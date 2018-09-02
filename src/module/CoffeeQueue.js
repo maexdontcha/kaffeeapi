@@ -1,3 +1,6 @@
+import { MongoConnection } from '../service/MongoDB'
+import CoffeeObjekt from '../module/OrderObject'
+
 class CoffeeQueue {
   constructor (item) {
     this.elements = []
@@ -30,7 +33,8 @@ class CoffeeQueue {
   // Sucht alle Bestellungen die Ausgeführt werden müssen und lieferte die OrderObjecte als Callback zurück
   ToBeExecuted (cb) {
     const date = new Date()
-    const QueueElement = this.elements.find(QueueElement => new Date(QueueElement.deliveryDate) < date && QueueElement.inQueue === true)
+    // const QueueElement = this.elements.find(QueueElement => new Date(QueueElement.deliveryDate) < date && QueueElement.inQueue === true)
+    const QueueElement = this.elements.find(QueueElement => new Date(QueueElement.deliveryDate) < date && QueueElement.waitlist === false)
     if (QueueElement) {
       cb(QueueElement)
     }
@@ -52,6 +56,33 @@ class CoffeeQueue {
       result += waitlist[i].duration
     }
     return result
+  }
+
+  // Load old Orders into Queue
+  LoadOrders () {
+    MongoConnection().then((connection) => {
+      const query = { delivered: false }
+      connection.find(query).toArray((err, result) => {
+        if (err) throw err
+        result.map((order) => {
+          const object = new CoffeeObjekt({
+            'productID': order.productID,
+            'deliveryDate': new Date(order.deliveryDate),
+            'userID': order.userID,
+            'httpreq': order.req
+          })
+          object.duration = order.duration
+          object.uuid = order.uuid
+          object.duration = order.duration
+          object.inQueue = order.inQueue
+          object.inQueueTime = new Date(order.inQueueTime)
+          object.waitlist = order.waitlist
+          object.waitlistTime = new Date(order.waitlistTime)
+          object.delivered = order.delivered
+          object.deliveredTime = false
+        })
+      })
+    })
   }
 }
 

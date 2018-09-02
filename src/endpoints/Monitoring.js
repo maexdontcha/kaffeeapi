@@ -1,15 +1,19 @@
-import { server } from '../service/Server'
+import { Server } from '../service/Server'
 import { LoggingModul } from '../module/Logging'
 
 export const Monitoring = () => {
-  server.get('/Monitoring', async (req, res) => {
-    await LoggingModul.EstimatedDeliveryTime().then((EstimatedDeliveryTime) => {
-      res.json(
-        { Queue: LoggingModul.QueueLength(),
-          DurationTotal: LoggingModul.WorkloadWaitliste(),
-          EstimatedDeliveryTime: EstimatedDeliveryTime
-        }
-      )
+  Server.get('/Monitoring', async (req, res) => {
+    const data = [
+      LoggingModul.EstimatedDeliveryTime(),
+      LoggingModul.QueueLength(),
+      LoggingModul.WorkloadWaitlist()
+    ]
+    Promise.all(data).then(values => {
+      res.json({
+        EstimatedDeliveryTime: values[0],
+        QueueLength: values[1],
+        WorkloadWaitlist: values[2]
+      })
     })
   })
 }

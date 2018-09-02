@@ -1,7 +1,7 @@
 const express = require('express')
-export const server = express()
+export const Server = express()
 
-server.use((req, res, next) => {
+Server.use((req, res, next) => {
   res.header(
     'Access-Control-Expose-Headers',
     'Content-Length',
@@ -20,7 +20,7 @@ server.use((req, res, next) => {
 })
 
 // server Run on port 9000
-server.listen(9000, err => {
+Server.listen(9000, err => {
   if (err) throw err
   // console.log('Listening on http://localhost:' + listener.address().port)
 })

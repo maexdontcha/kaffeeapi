@@ -1,15 +1,15 @@
-import { server } from '../service/Server'
+import { Server } from '../service/Server'
 import { MaschineStates } from '../service/StaticData'
 import { ApiRequest, Api, Endpoint } from '../service/ApiRequest'
 
 // Endpunkte um den Status der Kaffeemaschiene zu faken
 export const fakestatus = () => {
   let state = 'ready'
-  server.get('/fakestatus', async (req, res) => {
+  Server.get('/fakestatus', async (req, res) => {
     res.status(200).json({ state: state })
   })
 
-  server.get('/changestate', async (req, res) => {
+  Server.get('/changestate', async (req, res) => {
     state = MaschineStates.run
     setTimeout(async () => {
       state = MaschineStates.ready

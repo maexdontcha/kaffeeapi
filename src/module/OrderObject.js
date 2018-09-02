@@ -1,7 +1,8 @@
 import { Queue } from './CoffeeQueue'
-import { LoggingModul } from './Logging'
-import { CoffeeDuration } from '../service/StaticData'
-import { InsertIntoMongoDB, UpdateMongoObject } from '../service/MongoDB'
+// import { LoggingModul } from './Logging'
+import { CoffeeDuration, LastCounter } from '../service/StaticData'
+import { MongoConnection } from '../service/MongoDB'
+
 // Set Counter to 0
 let counter = 0
 
@@ -25,18 +26,28 @@ class CoffeeOrder {
     this.deliveredTime = null
 
     Queue.add(this)
-    LoggingModul.add(this)
-    this.GenerateMongoDB()
+    // LoggingModul.add(this)
   }
 
-  async GenerateMongoDB () {
-    await InsertIntoMongoDB(this)
+  // Save Model to Mongo
+  SaveToMongo () {
+    // Insert CoffeeOrder to MongoDB
+    MongoConnection().then((connection) => {
+      connection.insertOne(this, (err, res) => {
+        if (err) throw err
+      })
+    })
   }
 
+  // Save Model to Mongo
   Save () {
     const id = { uuid: this.uuid }
     const myobj = { $set: this }
-    UpdateMongoObject(id, myobj)
+    MongoConnection().then((connection) => {
+      connection.updateOne(id, myobj, (err, res) => {
+        if (err) throw err
+      })
+    })
   }
 
   // setzt Order auf Waitlist

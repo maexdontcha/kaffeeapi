@@ -1,3 +1,5 @@
+import { MongoConnection } from './MongoDB'
+
 // Zeiten wie lange die jeweiligen Kaffen brauchen
 export const CoffeeDuration = {
   1: 45, // Espresso
@@ -17,7 +19,19 @@ export const MaschineStates = {
 export const MongoStatic = {
   MongoURL: 'mongodb://localhost:27017',
   DBName: 'myproject',
-  Collection: 'test5'
+  Collection: 'test7'
+}
+
+// LastCounter
+export const LastCounter = () => {
+  return new Promise((resolve, reject) => {
+    MongoConnection().then((connection) => {
+      connection.find().sort({ counter: -1 }).limit(1).toArray((err, result) => {
+        if (err) throw err
+        resolve(result[0].counter)
+      })
+    })
+  })
 }
 
 export const entryScreen = () => {
