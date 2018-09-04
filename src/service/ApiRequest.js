@@ -14,18 +14,26 @@ export const Endpoint = {
   changestate: '/changestate'
 }
 
+// Kommandos
+export const Feedback = {
+  StartColor: 'setLight(200,100,0)',
+  EndColor: 'setLight(200,100,0)',
+  StartSpeak: 'Speak exp:="Wir Danken Philipp und Max für die tolle Api"',
+  EndSpeak: 'Speak exp:="Wir Danken Philipp und Max für die tolle Api"'
+}
+
 // ApiRequest als Objekt
 // Liefert ein Promise und als ergebnis den Body
 export const ApiRequest = (url) => {
   return new Promise((resolve, reject) => {
     request(url, (err, res, body) => {
       if (err) {
-        reject(new Error('Kritischer Fehler'))
+        reject(new Error('Kritischer ApiRequest Fehler'))
       } else {
-        if (res.statusCode == 200){
+        if (res.statusCode === 200) {
           resolve(body)
         } else {
-          reject(new Error('Umbekannter Fehler'))
+          reject(new Error('Umbekannter ApiRequest Fehler'))
         }
       }
     })
@@ -33,7 +41,7 @@ export const ApiRequest = (url) => {
 }
 
 // urlBuilder als Objekt
-export const urlBuilder = () => {
-  return new Promis((resolve, reject) => {
-  })
-}
+// export const urlBuilder = () => {
+//   return new Promis((resolve, reject) => {
+//   })
+// }

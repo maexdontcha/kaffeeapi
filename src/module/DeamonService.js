@@ -1,5 +1,5 @@
 import { Queue } from './CoffeeQueue'
-import { ApiRequest, Api, Endpoint } from '../service/ApiRequest'
+import { ApiRequest, Api, Endpoint, Feedback } from '../service/ApiRequest'
 import { CoffeeDuration, entryScreen } from '../service/StaticData'
 
 // Service Class, prüft und sendet die Orders an das ACL Interface wenn vorhanden
@@ -12,7 +12,7 @@ class Service {
   // init function
   run () {
     // Render entryScreen
-    entryScreen()
+    // entryScreen()
   }
 
   // Prüft ob Bestellungen in der Queue ausgeführt werden sollen
@@ -42,7 +42,7 @@ class Service {
           Queue.elements.splice(index, 1)
         }).catch(() => {
           // Ausgabe auf der Console
-          console.log('ACL INTERFACE Down')
+          // console.log('ACL INTERFACE Down')
         })
       }).catch(() => {})
     }
@@ -74,13 +74,14 @@ class Service {
     return new Promise(async (resolve, reject) => {
       // Sendet aufgaben Stack an das ACL Interface
       Promise.all([
-        ApiRequest(Api.Acl + Endpoint.cmd + 'setLight(200,0,0)'),
-        ApiRequest(Api.Acl + Endpoint.cmd + 'Speak exp:="Wir Danken Philipp und Max für die tolle Api"'),
+        ApiRequest(Api.Acl + Endpoint.cmd + Feedback.StartColor),
+        ApiRequest(Api.Acl + Endpoint.cmd + Feedback.StartSpeak),
         ApiRequest(Api.Acl + Endpoint.cmd + 'StartBeverage(' + BeverageId + ')')]
       )
         .then(async () => {
           // Setzt den State Dummymäßig auf Running, Duration aus .cfg file
-          await ApiRequest(Api.Fake + Endpoint.changestate + '?duration=' + CoffeeDuration[BeverageId])
+          const CoffeeSelection = CoffeeDuration.find(CoffeeSelection => CoffeeSelection.id === BeverageId)
+          await ApiRequest(Api.Fake + Endpoint.changestate + '?duration=' + CoffeeSelection.duration)
           resolve(true)
         })
         .catch((err) => {

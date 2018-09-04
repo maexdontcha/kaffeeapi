@@ -3,6 +3,7 @@ import { Queue } from './module/CoffeeQueue'
 
 import { Server } from './service/Server'
 import { GMT } from './service/DateConverter'
+import { CoffeeDuration } from './service/StaticData'
 
 import { Monitoring } from './endpoints/Monitoring'
 import { Beverage } from './endpoints/Beverage'

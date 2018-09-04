@@ -8,7 +8,7 @@ const uuidv4 = require('uuid/v4')
 
 class CoffeeOrder {
   constructor (item) {
-    // this.httpreq = item.httpreq
+    this.httpheader = item.header
     this.counter = null
     this.CreatetAt = new Date()
     this.UpdatetAt = new Date()
@@ -16,7 +16,10 @@ class CoffeeOrder {
     this.deliveryDate = item.deliveryDate
     this.userID = item.userID
     this.uuid = uuidv4()
-    this.duration = CoffeeDuration[item.productID]
+    // this.duration = CoffeeDuration[item.productID]
+
+    this.delted = false
+    this.deltedTime = null
 
     this.inQueue = true
     this.inQueueTime = new Date()
@@ -63,6 +66,13 @@ class CoffeeOrder {
     this.delivered = true
     this.waitlist = false
     this.deliveredTime = new Date()
+    this.Save()
+  }
+
+  // setzt delted auf true
+  DelteOrder () {
+    this.delted = true
+    this.deltedTime = new Date()
     this.Save()
   }
 

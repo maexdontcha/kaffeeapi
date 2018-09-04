@@ -1,12 +1,19 @@
 import { MongoConnection } from './MongoDB'
 
 // Zeiten wie lange die jeweiligen Kaffen brauchen
-export const CoffeeDuration = {
-  1: 45, // Espresso
-  2: 55, // CaffeeCrema
-  3: 44, // CaffeeCrema
-  4: 30 // CaffeeCrema
-}
+export const CoffeeDuration = [
+  { 'id': 1, 'duration': 30, 'name': 'espresso' },
+  { 'id': 2, 'duration': 10, 'name': 'Caffee Crema' },
+  { 'id': 3, 'duration': 20, 'name': 'andere' },
+  { 'id': 4, 'duration': 25, 'name': 'andere' },
+  { 'id': 5, 'duration': 25, 'name': 'andere' },
+  { 'id': 6, 'duration': 25, 'name': 'andere' },
+  { 'id': 7, 'duration': 25, 'name': 'andere' },
+  { 'id': 8, 'duration': 25, 'name': 'andere' },
+  { 'id': 9, 'duration': 25, 'name': 'andere' },
+  { 'id': 10, 'duration': 25, 'name': 'andere' },
+  { 'id': 11, 'duration': 25, 'name': 'Dusch mich' }
+]
 
 // Maschienen Stati
 export const MachineStates = {
@@ -17,10 +24,10 @@ export const MachineStates = {
 
 // MongoDB
 export const MongoStatic = {
-  // MongoURL: 'mongodb://root:root@localhost:27017/admin',
-  MongoURL: 'mongodb://root:root@mongodb/admin',
+  MongoURL: 'mongodb://localhost:27017',
+  // MongoURL: 'mongodb://root:root@mongodb/admin',
   DBName: 'myproject',
-  Collection: 'test12'
+  Collection: 'test15'
 }
 
 // LastCounter

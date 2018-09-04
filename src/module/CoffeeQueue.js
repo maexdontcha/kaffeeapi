@@ -21,6 +21,7 @@ class CoffeeQueue {
   deleteBeverage (uuid, cb) {
     const index = this.elements.findIndex(QueueElement => QueueElement.uuid === uuid)
     if (index !== -1) {
+      this.elements[index].DelteOrder()
       this.elements.splice(index, 1)
       cb(null, true)
     } else {
@@ -69,7 +70,7 @@ class CoffeeQueue {
   // Load old Orders into Queue
   LoadOrders () {
     MongoConnection().then((connection) => {
-      const query = { delivered: false }
+      const query = { delivered: false, delted: false }
       connection.find(query).toArray((err, result) => {
         if (err) throw err
         result.map((order) => {
@@ -79,11 +80,10 @@ class CoffeeQueue {
             'userID': order.userID,
             'httpreq': order.req
           })
-          object.httpreq = order.httpreq
+          object.httpheader = order.httpheader
           object.counter = order.counter
-          object.duration = order.duration
           object.uuid = order.uuid
-          object.duration = order.duration
+          // object.duration = order.duration
           object.inQueue = order.inQueue
           object.inQueueTime = new Date(order.inQueueTime)
           object.waitlist = order.waitlist
