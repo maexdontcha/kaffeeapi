@@ -3,18 +3,19 @@ import { Queue } from './CoffeeQueue'
 import { CoffeeDuration } from '../service/StaticData'
 import { MongoConnection } from '../service/MongoDB'
 
+const uuidv4 = require('uuid/v4')
 // Set Counter to 0
 
 class CoffeeOrder {
   constructor (item) {
-    // this.httpreq = item.httpren
+    // this.httpreq = item.httpreq
     this.counter = null
     this.CreatetAt = new Date()
     this.UpdatetAt = new Date()
     this.productID = item.productID
     this.deliveryDate = item.deliveryDate
     this.userID = item.userID
-    this.uuid = this.GenerateUUID()
+    this.uuid = uuidv4()
     this.duration = CoffeeDuration[item.productID]
 
     this.inQueue = true
@@ -83,14 +84,14 @@ class CoffeeOrder {
     this.Save()
   }
 
-  // UUID generator
-  GenerateUUID () {
-    const Uid =
-      Math.random().toString(36).substring(2, 7) + '-' +
-      Math.random().toString(36).substring(2, 7) + '-' +
-      Math.random().toString(36).substring(2, 7) + '-' +
-      Math.random().toString(36).substring(2, 7)
-    return Uid
-  }
+  // UUID generator, only while developing
+  // GenerateUUID () {
+  //   const Uid =
+  //     Math.random().toString(36).substring(2, 7) + '-' +
+  //     Math.random().toString(36).substring(2, 7) + '-' +
+  //     Math.random().toString(36).substring(2, 7) + '-' +
+  //     Math.random().toString(36).substring(2, 7)
+  //   return Uid
+  // }
 }
 export default CoffeeOrder

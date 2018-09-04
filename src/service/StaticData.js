@@ -9,7 +9,7 @@ export const CoffeeDuration = {
 }
 
 // Maschienen Stati
-export const MaschineStates = {
+export const MachineStates = {
   run: 'isRunning',
   ready: 'ready',
   error: 'error'

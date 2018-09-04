@@ -79,6 +79,7 @@ class CoffeeQueue {
             'userID': order.userID,
             'httpreq': order.req
           })
+          object.httpreq = order.httpreq
           object.counter = order.counter
           object.duration = order.duration
           object.uuid = order.uuid
@@ -89,7 +90,6 @@ class CoffeeQueue {
           object.waitlistTime = new Date(order.waitlistTime)
           object.delivered = order.delivered
           object.deliveredTime = false
-          console.log(object)
         })
       })
     })

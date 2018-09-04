@@ -10,8 +10,6 @@ import { Queueing } from './endpoints/Queue'
 import { fakestatus } from './endpoints/fakestatus'
 
 import { ApiRequest } from './service/ApiRequest'
-//
-// import { MongoConnection } from './service/MongoDB'
 
 // Init Deamon to check the Queue and Execut orders
 DeamonService.run()
