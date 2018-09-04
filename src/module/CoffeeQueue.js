@@ -1,12 +1,20 @@
 import { MongoConnection } from '../service/MongoDB'
 import CoffeeObjekt from '../module/OrderObject'
+import { LastCounter } from '../service/StaticData'
 
 class CoffeeQueue {
   constructor (item) {
+    this.SetCounter()
     this.elements = []
   }
   add (order) {
     this.elements.push(order)
+  }
+
+  SetCounter () {
+    LastCounter().then(item => {
+      this.counter = item + 1
+    })
   }
 
   // Löscht eine Bestellung aus der Queue
@@ -71,6 +79,7 @@ class CoffeeQueue {
             'userID': order.userID,
             'httpreq': order.req
           })
+          object.counter = order.counter
           object.duration = order.duration
           object.uuid = order.uuid
           object.duration = order.duration
@@ -80,6 +89,7 @@ class CoffeeQueue {
           object.waitlistTime = new Date(order.waitlistTime)
           object.delivered = order.delivered
           object.deliveredTime = false
+          console.log(object)
         })
       })
     })

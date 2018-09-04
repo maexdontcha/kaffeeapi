@@ -12,9 +12,12 @@ export const fakestatus = () => {
   Server.get('/changestate', async (req, res) => {
     state = MaschineStates.run
     setTimeout(async () => {
-      state = MaschineStates.ready
       await ApiRequest(Api.Acl + Endpoint.cmd + 'setLight(200,100,0)')
       await ApiRequest(Api.Acl + Endpoint.cmd + 'Speak exp:="Wir Danken Philipp und Max für die tolle Api"')
+      // wartet 2 sekunden bevor die Maschine wieder Ready ist
+      setTimeout(() => {
+        state = MaschineStates.ready
+      }, 2000)
     }, req.query.duration * 1000)
     res.status(200).json({ state: true })
   })

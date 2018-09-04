@@ -1,15 +1,14 @@
 import { Queue } from './CoffeeQueue'
 // import { LoggingModul } from './Logging'
-import { CoffeeDuration, LastCounter } from '../service/StaticData'
+import { CoffeeDuration } from '../service/StaticData'
 import { MongoConnection } from '../service/MongoDB'
 
 // Set Counter to 0
-let counter = 0
 
 class CoffeeOrder {
   constructor (item) {
-    // this.httpreq = item.httpreq
-    this.counter = counter++
+    // this.httpreq = item.httpren
+    this.counter = null
     this.CreatetAt = new Date()
     this.UpdatetAt = new Date()
     this.productID = item.productID
@@ -24,13 +23,13 @@ class CoffeeOrder {
     this.waitlistTime = null
     this.delivered = false
     this.deliveredTime = null
-
     Queue.add(this)
     // LoggingModul.add(this)
   }
 
   // Save Model to Mongo
   SaveToMongo () {
+    this.counter = Queue.counter++
     // Insert CoffeeOrder to MongoDB
     MongoConnection().then((connection) => {
       connection.insertOne(this, (err, res) => {

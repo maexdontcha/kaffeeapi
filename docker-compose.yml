@@ -1,0 +1,23 @@
+#docker-compose up --build
+version: "2"
+services:
+  # node
+  nodejs:
+    container_name: nodeapp
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      - "9000:9000"
+    links:
+      - mongodb:mongodb
+
+  # Mongodb
+  mongodb:
+    container_name: mongodb
+    image: mongo:3.6
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    restart: on-failure

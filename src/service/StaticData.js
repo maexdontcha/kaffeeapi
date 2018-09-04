@@ -17,9 +17,10 @@ export const MaschineStates = {
 
 // MongoDB
 export const MongoStatic = {
-  MongoURL: 'mongodb://localhost:27017',
+  // MongoURL: 'mongodb://root:root@localhost:27017/admin',
+  MongoURL: 'mongodb://root:root@mongodb/admin',
   DBName: 'myproject',
-  Collection: 'test7'
+  Collection: 'test12'
 }
 
 // LastCounter
@@ -28,7 +29,11 @@ export const LastCounter = () => {
     MongoConnection().then((connection) => {
       connection.find().sort({ counter: -1 }).limit(1).toArray((err, result) => {
         if (err) throw err
-        resolve(result[0].counter)
+        if (result[0] !== undefined) {
+          resolve(result[0].counter)
+        } else {
+          resolve(0)
+        }
       })
     })
   })
