@@ -46,6 +46,19 @@ export const LastCounter = () => {
   })
 }
 
+// generate Time slot
+export const GenerateTimeslots = () => {
+  const x = 8
+  const timeslot = 24 / x
+  const array = []
+  for (let i = 0; i <= x - 1; i++) {
+    let s = i * timeslot
+    let e = s + timeslot
+    array.push({ start: s, end: e })
+  }
+  return array
+}
+
 export const entryScreen = () => {
   console.log(' ______________________________________________________________')
   console.log('|                                                             |')
@@ -57,7 +70,7 @@ export const entryScreen = () => {
   console.log('|  ( C|/\\/\\/\\/\\/|       tryOrderBeverage in interval 3000ms   |')
   console.log('|   "-./\\/\\/\\/\\/|                                             |')
   console.log('|     "_________"                                             |')
-  console.log('|      "-------"        Createt by Philipp and Max            |')
+  console.log('|      "-------"        Created by Philipp and Max            |')
   console.log('|                                                             |')
   console.log('|_____________________________________________________________|')
 }

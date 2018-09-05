@@ -1,6 +1,6 @@
 import { Queue } from './CoffeeQueue'
 import { MongoConnection } from '../service/MongoDB'
-import { CoffeeDuration } from '../service/StaticData'
+import { CoffeeDuration, GenerateTimeslots } from '../service/StaticData'
 
 class Logging {
   // constructor (item) {
@@ -46,7 +46,7 @@ class Logging {
             .filter(item => item !== undefined)
           // return 0 wenn noch keine Kaffeedaten vorhanden sind
           if (x.length === 0) {
-            resolve(x)
+            resolve(0)
           } else {
             // errechnet den Durschnitt
             const y = x.reduce((a, b) => a + b)
@@ -70,6 +70,31 @@ class Logging {
         })
         Promise.all(QueryPromises).then(() => {
           resolve(Quantity)
+        })
+      })
+    })
+  }
+
+  PriodOrdersQuantity () {
+    return new Promise(async (resolve, reject) => {
+      MongoConnection().then((connection) => {
+        connection.find().toArray((err, result) => {
+          if (err) throw err
+          const delivered = result.filter(item => item.delivered === true)
+          result = []
+          GenerateTimeslots().map(times => {
+            let count = 0
+            delivered.map(item => {
+              const date = new Date(item.deliveredTime)
+              const hours = date.getHours()
+              if (hours > times.start && times.end > hours) {
+                count++
+              }
+            })
+            // result.push({ start: times.start, end: times.end, count: count })
+            result.push(count)
+          })
+          resolve(result)
         })
       })
     })
