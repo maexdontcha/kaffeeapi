@@ -8,7 +8,7 @@ export const Monitoring = () => {
       LoggingModul.QueueLength(),
       LoggingModul.WorkloadWaitlist(),
       LoggingModul.AllOrdersQuantity(),
-      LoggingModul.PriodOrdersQuantity()
+      LoggingModul.PeriodOrdersQuantity()
     ]
     Promise.all(Promises).then(values => {
       res.json({
@@ -16,7 +16,7 @@ export const Monitoring = () => {
         QueueLength: values[1],
         WorkloadWaitlist: values[2],
         AllOrdersQuantity: values[3],
-        PriodOrdersQuantity: values[4]
+        PeriodOrdersQuantity: values[4]
       })
     })
   })

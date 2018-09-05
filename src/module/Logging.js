@@ -75,7 +75,7 @@ class Logging {
     })
   }
 
-  PriodOrdersQuantity () {
+  PeriodOrdersQuantity () {
     return new Promise(async (resolve, reject) => {
       MongoConnection().then((connection) => {
         connection.find().toArray((err, result) => {
