@@ -2,17 +2,21 @@ import { MongoConnection } from './MongoDB'
 
 // Zeiten wie lange die jeweiligen Kaffen brauchen
 export const CoffeeDuration = [
-  { 'id': 1, 'duration': 30, 'name': 'espresso' },
-  { 'id': 2, 'duration': 10, 'name': 'Caffee Crema' },
-  { 'id': 3, 'duration': 20, 'name': 'andere' },
-  { 'id': 4, 'duration': 25, 'name': 'andere' },
-  { 'id': 5, 'duration': 25, 'name': 'andere' },
-  { 'id': 6, 'duration': 25, 'name': 'andere' },
-  { 'id': 7, 'duration': 25, 'name': 'andere' },
-  { 'id': 8, 'duration': 25, 'name': 'andere' },
-  { 'id': 9, 'duration': 25, 'name': 'andere' },
-  { 'id': 10, 'duration': 25, 'name': 'andere' },
-  { 'id': 11, 'duration': 25, 'name': 'Dusch mich' }
+  { 'id': 1, 'duration': 30, 'name': 'Espresso' },
+  { 'id': 2, 'duration': 50, 'name': 'Cafe Creme' },
+  { 'id': 3, 'duration': 120, 'name': 'Milch-Choc ' },
+  { 'id': 4, 'duration': 120, 'name': 'Chociatto' },
+  { 'id': 5, 'duration': 120, 'name': 'Cappuccino' },
+  { 'id': 6, 'duration': 120, 'name': 'Latte Macchiato' },
+  { 'id': 7, 'duration': 120, 'name': 'Milchkaffee' },
+  { 'id': 8, 'duration': 120, 'name': 'Milchschaum' },
+  { 'id': 9, 'duration': 120, 'name': 'Espresso doppelt' },
+  { 'id': 10, 'duration': 120, 'name': 'Cafe Creme doppelt' },
+  { 'id': 11, 'duration': 120, 'name': 'Espresso Macchiato' },
+  { 'id': 12, 'duration': 120, 'name': 'Espresso Macchiato doppelt' },
+  { 'id': 13, 'duration': 120, 'name': 'Cappuccino doppelt' },
+  { 'id': 14, 'duration': 120, 'name': 'Latte Macchiato doppelt' },
+  { 'id': 15, 'duration': 120, 'name': 'Milchkaffee doppelt' }
 ]
 
 // Maschienen Stati
@@ -26,8 +30,8 @@ export const MachineStates = {
 export const MongoStatic = {
   MongoURL: 'mongodb://localhost:27017',
   // MongoURL: 'mongodb://root:root@mongodb/admin',
-  DBName: 'myproject',
-  Collection: 'test15'
+  DBName: 'CoffeeMachine',
+  Collection: 'order1'
 }
 
 // LastCounter

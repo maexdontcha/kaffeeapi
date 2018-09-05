@@ -16,10 +16,10 @@ export const Endpoint = {
 
 // Kommandos
 export const Feedback = {
-  StartColor: 'setLight(200,100,0)',
-  EndColor: 'setLight(200,100,0)',
-  StartSpeak: 'Speak exp:="Wir Danken Philipp und Max für die tolle Api"',
-  EndSpeak: 'Speak exp:="Wir Danken Philipp und Max für die tolle Api"'
+  StartColor: 'setLight(r=10 g=255 b=10)',
+  EndColor: 'setLight(r=255 g=10 b=10)',
+  StartSpeak: 'Speak exp:="James Starte den Motor! Auf gehts"',
+  EndSpeak: 'Speak exp:="Ihr Kaffee ist fertig, Vielen Dank"'
 }
 
 // ApiRequest als Objekt

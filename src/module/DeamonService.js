@@ -12,7 +12,7 @@ class Service {
   // init function
   run () {
     // Render entryScreen
-    // entryScreen()
+    entryScreen()
   }
 
   // Prüft ob Bestellungen in der Queue ausgeführt werden sollen
