@@ -1,6 +1,6 @@
 import { MongoConnection } from '../service/MongoDB'
 import CoffeeObjekt from '../module/OrderObject'
-import { LastCounter } from '../service/StaticData'
+import { LastCounter, CoffeeDuration } from '../service/StaticData'
 
 class CoffeeQueue {
   constructor (item) {
@@ -62,7 +62,8 @@ class CoffeeQueue {
     const index = waitlist.findIndex(QueueElement => QueueElement.uuid === uuid)
     let result = false
     for (let i = 0; i <= index; i++) {
-      result += waitlist[i].duration
+      const duration = CoffeeDuration.find(duration => duration.id === waitlist[i].id)
+      result += duration.duration
     }
     return result
   }

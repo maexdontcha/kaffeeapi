@@ -21,8 +21,7 @@ class Logging {
   WorkloadWaitlist () {
     return new Promise((resolve, reject) => {
       const Waitlist = Queue.GenerateWaitlist()
-
-      if (Waitlist.length > 0) {
+      if (Waitlist.length >= 0) {
         resolve(Waitlist.map(item => {
           return CoffeeDuration.find(Duration => Duration.id === item.productID).duration
         }).reduce((a, b) => a + b))
