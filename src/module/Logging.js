@@ -21,7 +21,8 @@ class Logging {
   WorkloadWaitlist () {
     return new Promise((resolve, reject) => {
       const Waitlist = Queue.GenerateWaitlist()
-      if (Waitlist.length >= 0) {
+      console.log(Waitlist.length)
+      if (Waitlist.length > 0) {
         resolve(Waitlist.map(item => {
           return CoffeeDuration.find(Duration => Duration.id === item.productID).duration
         }).reduce((a, b) => a + b))
@@ -44,6 +45,7 @@ class Logging {
           })// Filter alle raus die noch ungeliefert sind
             .filter(item => item !== undefined)
           // return 0 wenn noch keine Kaffeedaten vorhanden sind
+
           if (x.length === 0) {
             resolve(0)
           } else {
