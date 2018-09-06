@@ -51,7 +51,7 @@ class Logging {
           } else {
             // errechnet den Durschnitt
             const y = x.reduce((a, b) => a + b)
-            resolve(y / x.length)
+            resolve(Math.round(y / x.length))
           }
         })
       })
